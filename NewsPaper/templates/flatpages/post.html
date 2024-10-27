@@ -1,0 +1,40 @@
+Так вот!
+{% extends 'flatpages/default.html' %}
+{% load censor_filters %}
+{% load custom_tags %}
+
+{% block title %}
+Post
+{% endblock title %}
+
+{% block content %}
+    <h1>Все Новости</h1>
+    <h3>{% current_time '%b %d %Y %A' %}</h3>
+    <h4>{{ next_sale|default_if_none:"Смотрим, читаем." }}</h4>
+    <td><h5>Количество новостей: {{ news|length }}</h5></td>
+    <hr>
+    {% if news %}
+        <table>
+            <tr>
+                <td>Заголовок</td>
+                <td>Дата</td>
+                <td>Автор</td>
+                <td>Текст</td>
+                <td>Категория</td>
+                <td>Тип</td>
+            </tr>
+            {% for news in news %}
+            <tr>
+                <td>{{ post.post_title|censor }}</td>
+                <td>{{ time_now|date:'d M Y' }}</td>
+                <td>{{ news.post_author }}</td>
+                <td>{{ post.post_text|truncatewords:11|censor }}</td>
+                <td>{{ post.post_category }}</td>
+                <td>{{ post.post_type }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>Новостей нет</h2>
+    {% endif %}
+{% endblock content %}
